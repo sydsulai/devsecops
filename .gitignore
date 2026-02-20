@@ -1,0 +1,54 @@
+# Dependencies
+api/node_modules/
+client/node_modules/
+/.pnp
+.pnp.js
+
+# Testing
+/coverage
+api/coverage
+client/coverage
+
+# Production
+/build
+/dist
+api/build
+api/dist
+client/build
+client/dist
+
+# Misc
+.DS_Store
+api/.env
+api/.env.local
+api/.env.development.local
+api/.env.test.local
+api/.env.production.local
+client/.env
+client/.env.local
+client/.env.development.local
+client/.env.test.local
+client/.env.production.local
+
+# Logs
+lerna-debug.log*
+api/npm-debug.log*
+api/yarn-debug.log*
+api/yarn-error.log*
+client/npm-debug.log*
+client/yarn-debug.log*
+client/yarn-error.log*
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+Thumbs.db
+
+# React
+.cache/
+client/.cache/
