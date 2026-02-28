@@ -51,8 +51,10 @@ pipeline {
     stages {
         stage('Git Checkout') {
             steps {
-                def branch = params.pr_from_ref ?: env.pr_from_ref
-                git branch: "${branch}", credentialsId: 'sydsulai-jenkinsgithub-int-pat', url: 'https://github.com/sydsulai/devsecops.git'
+                script {
+                    def branch = params.pr_from_ref ?: env.pr_from_ref
+                    git branch: "${branch}", credentialsId: 'sydsulai-jenkinsgithub-int-pat', url: 'https://github.com/sydsulai/devsecops.git'
+                }
             }
         }
         stage('FrontEnd Compilation') {
