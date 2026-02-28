@@ -52,3 +52,7 @@ Thumbs.db
 # React
 .cache/
 client/.cache/
+
+# Trivy Files
+api-trivy-report.html
+client-trivy-report.html
