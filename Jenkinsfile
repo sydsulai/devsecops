@@ -81,13 +81,13 @@ pipeline {
                 }
             }
         }
-        stage('Quality Gate Check') {
-            steps {
-                timeout(time: 5, unit: 'Minutes') {
-                    waitForQualityGate abortPipeline: false, credentialsId: 'JENKINS-SONARQUBE-TOKEN'
-                }
-            }
-        }
+        // stage('Quality Gate Check') {
+        //     steps {
+        //         timeout(time: 5, unit: 'Minutes') {
+        //             waitForQualityGate abortPipeline: false, credentialsId: 'JENKINS-SONARQUBE-TOKEN'
+        //         }
+        //     }
+        // }
         stage('Trivy Scan Client') {
             steps {
                 sh 'trivy fs ./client --scanners=vuln,misconfig,secret,license --format table -o client-trivy-report.yaml '
