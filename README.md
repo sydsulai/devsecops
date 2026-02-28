@@ -14,3 +14,13 @@ E2E devsecops pipeline PROD level. This repo integrates app with security checks
 8. Build Docker Image
 9. Scan Docker Image with Trivy
 10. Push Image to DockerHub/AWS ECR
+
+## Tools/Plugins Required
+
+- NodeJs - Node JS plugin is required. Added it to tools to make it available.
+- Pipeline Stage View - Plugin is required.
+- SonarQube Scanner - Plugin is required.
+
+## Difference between plugin and installation:
+
+-

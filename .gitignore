@@ -54,4 +54,5 @@ Thumbs.db
 client/.cache/
 
 # Trivy Files
-fs-report.html
+api-trivy-report.html
+client-trivy-report.html

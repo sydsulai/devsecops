@@ -45,9 +45,14 @@ pipeline {
                 }
             }
         }
-        stage('Trivy Scan') {
+        stage('Trivy Scan Client') {
             steps {
-                sh 'trivy fs --format table -o fs-report.html .'
+                sh 'trivy fs ./client --scanners=vuln,misconfig,secret,license --format table -o client-trivy-report.yaml '
+            }
+        }
+        stage('Trivy Scan API') {
+            steps {
+                sh 'trivy fs ./api --scanners=vuln,misconfig,secret,license --format table -o api-trivy-report.yaml'
             }
         }
     }
