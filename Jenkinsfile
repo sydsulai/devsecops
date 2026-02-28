@@ -1,5 +1,30 @@
 pipeline {
     agent any
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '3', artifactNumToKeepStr: '3'))
+    }
+    parameters {
+        choice(
+            name: 'action', 
+            choices: ['opened', 'synchronize', 'reopened'], 
+            description: 'PR Action'
+        )
+        string(
+            name: 'pr_to_ref', 
+            defaultValue: 'main', 
+            description: 'Target branch (base ref)'
+        )
+        string(
+            name: 'pr_from_ref', 
+            defaultValue: 'dev', 
+            description: 'Source branch (head ref)'
+        )
+        string(
+            name: 'pr_id', 
+            defaultValue: '1', 
+            description: 'Pull Request ID'
+        )
+    }
     triggers {
         GenericTrigger(
             genericVariables: [
@@ -26,7 +51,8 @@ pipeline {
     stages {
         stage('Git Checkout') {
             steps {
-                git branch: "${env.pr_from_ref}", credentialsId: 'sydsulai-jenkinsgithub-int-pat', url: 'https://github.com/sydsulai/devsecops.git'
+                def branch = params.pr_from_ref ?: env.pr_from_ref
+                git branch: "${branch}", credentialsId: 'sydsulai-jenkinsgithub-int-pat', url: 'https://github.com/sydsulai/devsecops.git'
             }
         }
         stage('FrontEnd Compilation') {
@@ -55,13 +81,13 @@ pipeline {
                 }
             }
         }
-        // stage('Quality Gate Check') {
-        //     steps {
-        //         timeout(time: 1, unit: 'HOURS') {
-        //             waitForQualityGate abortPipeline: false, credentialsId: 'JENKINS-SONARQUBE-TOKEN'
-        //         }
-        //     }
-        // }
+        stage('Quality Gate Check') {
+            steps {
+                timeout(time: 5, unit: 'Minutes') {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'JENKINS-SONARQUBE-TOKEN'
+                }
+            }
+        }
         stage('Trivy Scan Client') {
             steps {
                 sh 'trivy fs ./client --scanners=vuln,misconfig,secret,license --format table -o client-trivy-report.yaml '

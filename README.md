@@ -21,14 +21,17 @@ E2E devsecops pipeline PROD level. This repo integrates app with security checks
 - Pipeline Stage View - Plugin is required.
 - SonarQube Scanner - Plugin is required.
 - Generic Webhook Trigger - Build when PR is submitted to Main from any other branches.
-- SonarQube Quality Gate - 
+- SonarQube Quality Gate - To create a webhook and wait for QualityGate status
+- Docker Pipeline - To Build and Push image from Jenkins. 
+- Docker Compose Setup (Optional)
+- AWS ECR - 
 
 ## ENV/Manual Installation/Credentials
 
 - Sonarqube - Remote URL and Credentials
 - gitLeaks - Manual Installation in Server
 - trivy - Manual Installation in Server
-- 
+- Docker - Install Docker
 
 ## Difference between plugin and installation:
 
@@ -41,9 +44,11 @@ E2E devsecops pipeline PROD level. This repo integrates app with security checks
 1. Store PAT token as username and password in Jenkins Credentials.
 1. 
 
+## Ref Docs
 
-## Ref Docs:
-- **Jenkins Installation** - 
-- **SonarQube INstallation** - [SonarQube]()
+- **Jenkins Installation** - [Jenkins](https://www.jenkins.io/doc/book/installing/)
+- **SonarQube INstallation** - [SonarQube](https://docs.sonarsource.com/sonarqube-server/server-installation), [Medium](https://baraqheart.medium.com/install-sonarqube-on-ubuntu-machine-1c1eb4002ab6)
 - **Trivy Installation** - [Trivy](https://trivy.dev/docs/latest/getting-started/installation/#debianubuntu-official)
 - **Integrating Sonarqube with Jenkins** [Integration](https://medium.com/@lilnya79/integrating-sonarqube-with-jenkins-fe20e454ccf4)
+- **Install Docker** - [Docker Installation](https://docs.docker.com/engine/install/ubuntu/)
+- **Generic WebHook Plugin** - [Generic Webhook](https://github.com/jenkinsci/generic-webhook-trigger-plugin/blob/master/src/test/resources/org/jenkinsci/plugins/gwt/bdd/github/github-pull-request.feature)
