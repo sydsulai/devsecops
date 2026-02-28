@@ -100,5 +100,31 @@ pipeline {
                 sh 'trivy fs ./api --scanners=vuln,misconfig,secret,license --format table -o api-trivy-report.yaml'
             }
         }
+        stage('Build Image and Push API Image to ECR') {
+            steps {
+                script {
+                    withDockerRegistry(url: '829007908826.dkr.ecr.ap-south-1.amazonaws.com/decsecops/api') {
+                        dir('api') {
+                            sh 'docker build -t devsecops-api:latest -f api/Dockerfile .'
+                            sh 'docker tag devsecops-api:latest 829007908826.dkr.ecr.ap-south-1.amazonaws.com/decsecops/api:v1.0.0'
+                            sh 'docker push 829007908826.dkr.ecr.ap-south-1.amazonaws.com/decsecops/api:v1.0.0'
+                        }
+                    }
+                }
+            }
+        }
+        stage('Build Image and Push Client Image to ECR') {
+            steps {
+                script {
+                    withDockerRegistry(url: '829007908826.dkr.ecr.ap-south-1.amazonaws.com/decsecops/client') {
+                        dir('client') {
+                            sh 'docker build -t devsecops-client:latest -f client/Dockerfile .'
+                            sh 'docker tag devsecops-client:latest 829007908826.dkr.ecr.ap-south-1.amazonaws.com/decsecops/client:v1.0.0'
+                            sh 'docker push 829007908826.dkr.ecr.ap-south-1.amazonaws.com/decsecops/client:v1.0.0'
+                        }
+                    }
+                }
+            }
+        }
     }
 }
