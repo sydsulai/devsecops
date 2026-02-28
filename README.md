@@ -21,6 +21,14 @@ E2E devsecops pipeline PROD level. This repo integrates app with security checks
 - Pipeline Stage View - Plugin is required.
 - SonarQube Scanner - Plugin is required.
 - Generic Webhook Trigger - Build when PR is submitted to Main from any other branches.
+- SonarQube Quality Gate - 
+
+## ENV/Manual Installation/Credentials
+
+- Sonarqube - Remote URL and Credentials
+- gitLeaks - Manual Installation in Server
+- trivy - Manual Installation in Server
+- 
 
 ## Difference between plugin and installation:
 
@@ -32,3 +40,10 @@ E2E devsecops pipeline PROD level. This repo integrates app with security checks
 1. Advised to create through Github Oauth Client ID and Secret. I did it through Github PAT Token
 1. Store PAT token as username and password in Jenkins Credentials.
 1. 
+
+
+## Ref Docs:
+- **Jenkins Installation** - 
+- **SonarQube INstallation** - [SonarQube]()
+- **Trivy Installation** - [Trivy](https://trivy.dev/docs/latest/getting-started/installation/#debianubuntu-official)
+- **Integrating Sonarqube with Jenkins** [Integration](https://medium.com/@lilnya79/integrating-sonarqube-with-jenkins-fe20e454ccf4)

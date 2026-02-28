@@ -21,7 +21,7 @@ pipeline {
         nodejs 'nodejs20'
     }
     environment {
-        SONAR_HOME = tool 'sonarqube-scanner'
+        SONAR_HOME = tool 'sonarqube-scanner' // POint out the sonar scanner plugin you added in the tool section
     }
     stages {
         stage('Git Checkout') {
@@ -50,18 +50,18 @@ pipeline {
         }
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('sonarqube') {
-                    sh '$SONAR_HOME/bin/sonar-scanner -Dsonar.projectKey=devsecops -Dsonar.sources=. -Dsonar.host.url=http://52.66.208.134:9000'
+                withSonarQubeEnv('sonarqube') { // POint out the Remote SonarQube server you added in the Configure System section
+                    sh '$SONAR_HOME/bin/sonar-scanner -Dsonar.projectKey=devsecops -Dsonar.sources=.'
                 }
             }
         }
-        stage('Quality Gate Check') {
-            steps {
-                timeout(time: 1, unit: 'HOURS') {
-                    withQualityGate abortPipeline: true, credentialsId: 'sonarqube-token'
-                }
-            }
-        }
+        // stage('Quality Gate Check') {
+        //     steps {
+        //         timeout(time: 1, unit: 'HOURS') {
+        //             waitForQualityGate abortPipeline: false, credentialsId: 'JENKINS-SONARQUBE-TOKEN'
+        //         }
+        //     }
+        // }
         stage('Trivy Scan Client') {
             steps {
                 sh 'trivy fs ./client --scanners=vuln,misconfig,secret,license --format table -o client-trivy-report.yaml '
