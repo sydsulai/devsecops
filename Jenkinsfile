@@ -108,6 +108,7 @@ pipeline {
                             sh 'docker build -t devsecops-api:latest -f api/Dockerfile .'
                             sh 'docker tag devsecops-api:latest 829007908826.dkr.ecr.ap-south-1.amazonaws.com/decsecops/api:v1.0.0'
                             sh 'docker push 829007908826.dkr.ecr.ap-south-1.amazonaws.com/decsecops/api:v1.0.0'
+                            sh 'trivy image --format table -o api-trivy-image-report.yaml 829007908826.dkr.ecr.ap-south-1.amazonaws.com/decsecops/api:v1.0.0'
                         }
                     }
                 }
@@ -121,6 +122,7 @@ pipeline {
                             sh 'docker build -t devsecops-client:latest -f client/Dockerfile .'
                             sh 'docker tag devsecops-client:latest 829007908826.dkr.ecr.ap-south-1.amazonaws.com/decsecops/client:v1.0.0'
                             sh 'docker push 829007908826.dkr.ecr.ap-south-1.amazonaws.com/decsecops/client:v1.0.0'
+                            sh 'trivy image --format table -o client-trivy-image-report.yaml 829007908826.dkr.ecr.ap-south-1.amazonaws.com/decsecops/client:v1.0.0'
                         }
                     }
                 }
