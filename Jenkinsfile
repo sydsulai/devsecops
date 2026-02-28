@@ -1,5 +1,22 @@
 pipeline {
     agent any
+    triggers {
+        GenericTrigger(
+            genericVariables: [
+                [key: 'action', value: '$.action'],
+                [key: 'pr_to_ref', value: '$.pull_request.base.ref'],
+                [key: 'pr_from_ref', value: '$.pull_request.head.ref'],
+                [key: 'pr_id', value: '$.pull_request.id']
+            ],
+            causeString: 'Triggered by PR #$pr_id to $pr_to_ref',
+            // token: 'your-webhook-token',
+            printContributedVariables: true,
+            printPostContent: true,
+            silentResponse: false,
+            regexpFilterText: '$action$pr_to_ref',
+            regexpFilterExpression: '(opened|reopened|synchronize)main'
+        )
+    }
     tools {
         nodejs 'nodejs20'
     }
@@ -9,7 +26,7 @@ pipeline {
     stages {
         stage('Git Checkout') {
             steps {
-                git branch: 'dev', url: 'https://github.com/sydsulai/devsecops.git'
+                git branch: "${env.pr_from_ref}", credentialsId: 'sydsulai-jenkinsgithub-int-pat', url: 'https://github.com/sydsulai/devsecops.git'
             }
         }
         stage('FrontEnd Compilation') {
@@ -34,7 +51,7 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('sonarqube') {
-                    sh '$SONAR_HOME/bin/sonar-scanner -Dsonar.projectKey=devsecops -Dsonar.sources=. -Dsonar.host.url=http://localhost:9000'
+                    sh '$SONAR_HOME/bin/sonar-scanner -Dsonar.projectKey=devsecops -Dsonar.sources=. -Dsonar.host.url=http://52.66.208.134:9000'
                 }
             }
         }

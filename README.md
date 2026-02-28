@@ -20,7 +20,15 @@ E2E devsecops pipeline PROD level. This repo integrates app with security checks
 - NodeJs - Node JS plugin is required. Added it to tools to make it available.
 - Pipeline Stage View - Plugin is required.
 - SonarQube Scanner - Plugin is required.
+- Generic Webhook Trigger - Build when PR is submitted to Main from any other branches.
 
 ## Difference between plugin and installation:
 
--
+- Plugin is downloaded and managed by Jenkins and is managed through Global Tools management. Environment setup is available throughout the job-execution which is using the plugin. Version Switching is possible through simple one liner in tools section.
+- Global Installation through **apt-get** is managed by the linux-admin team. In case new version is needed it needs to be dowloaded and version switching needs to be done manually in the Jenkins Job.
+
+## Jenkins Github Intagration
+
+1. Advised to create through Github Oauth Client ID and Secret. I did it through Github PAT Token
+1. Store PAT token as username and password in Jenkins Credentials.
+1. 
