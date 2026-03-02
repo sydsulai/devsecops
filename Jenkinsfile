@@ -103,7 +103,7 @@ pipeline {
         stage('Build Image and Push API Image to ECR') {
             steps {
                 script {
-                    docker.withRegistry("https://829007908826.dkr.ecr.ap-south-1.amazonaws.com", "ecr:ap-south-1:credential-id") {
+                    docker.withRegistry("https://829007908826.dkr.ecr.ap-south-1.amazonaws.com", "ecr:ap-south-1:ecr-credentials") {
                         dir('api') {
                             docker.build("829007908826.dkr.ecr.ap-south-1.amazonaws.com/devsecops/api:v1.0.0")
                             docker.image("829007908826.dkr.ecr.ap-south-1.amazonaws.com/devsecops/api:v1.0.0").push()
@@ -116,7 +116,7 @@ pipeline {
         stage('Build Image and Push Client Image to ECR') {
             steps {
                 script {
-                    docker.withRegistry("https://829007908826.dkr.ecr.ap-south-1.amazonaws.com", "ecr:ap-south-1:credential-id") {
+                    docker.withRegistry("https://829007908826.dkr.ecr.ap-south-1.amazonaws.com", "ecr:ap-south-1:ecr-credentials") {
                         dir('client') {
                             docker.build("829007908826.dkr.ecr.ap-south-1.amazonaws.com/devsecops/client:v1.0.0")
                             docker.image("829007908826.dkr.ecr.ap-south-1.amazonaws.com/devsecops/client:v1.0.0").push()
