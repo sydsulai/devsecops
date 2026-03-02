@@ -105,9 +105,9 @@ pipeline {
                 script {
                     docker.withRegistry("https://829007908826.dkr.ecr.ap-south-1.amazonaws.com", "ecr:ap-south-1:ecr-credentials") {
                         dir('api') {
-                            docker.build("829007908826.dkr.ecr.ap-south-1.amazonaws.com/devsecops/api:v1.0.0")
-                            docker.image("829007908826.dkr.ecr.ap-south-1.amazonaws.com/devsecops/api:v1.0.0").push()
-                            sh 'trivy image --format table -o api-trivy-image-report.yaml 829007908826.dkr.ecr.ap-south-1.amazonaws.com/devsecops/api:v1.0.0'
+                            docker.build("829007908826.dkr.ecr.ap-south-1.amazonaws.com/devsecops/api:v2.0.0")
+                            docker.image("829007908826.dkr.ecr.ap-south-1.amazonaws.com/devsecops/api:v2.0.0").push()
+                            sh 'trivy image --format table -o api-trivy-image-report.yaml 829007908826.dkr.ecr.ap-south-1.amazonaws.com/devsecops/api:v2.0.0'
                         }
                     }
                 }
