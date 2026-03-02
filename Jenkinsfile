@@ -103,12 +103,11 @@ pipeline {
         stage('Build Image and Push API Image to ECR') {
             steps {
                 script {
-                    withDockerRegistry(url: '829007908826.dkr.ecr.ap-south-1.amazonaws.com/decsecops/api') {
+                    docker.withRegistry("https://829007908826.dkr.ecr.ap-south-1.amazonaws.com", "ecr:ap-south-1:ecr-credentials") {
                         dir('api') {
-                            sh 'docker build -t devsecops-api:latest .'
-                            sh 'docker tag devsecops-api:latest 829007908826.dkr.ecr.ap-south-1.amazonaws.com/decsecops/api:v1.0.0'
-                            sh 'docker push 829007908826.dkr.ecr.ap-south-1.amazonaws.com/decsecops/api:v1.0.0'
-                            sh 'trivy image --format table -o api-trivy-image-report.yaml 829007908826.dkr.ecr.ap-south-1.amazonaws.com/decsecops/api:v1.0.0'
+                            docker.build("829007908826.dkr.ecr.ap-south-1.amazonaws.com/devsecops/api:v1.0.0")
+                            docker.image("829007908826.dkr.ecr.ap-south-1.amazonaws.com/devsecops/api:v1.0.0").push()
+                            sh 'trivy image --format table -o api-trivy-image-report.yaml 829007908826.dkr.ecr.ap-south-1.amazonaws.com/devsecops/api:v1.0.0'
                         }
                     }
                 }
@@ -117,12 +116,11 @@ pipeline {
         stage('Build Image and Push Client Image to ECR') {
             steps {
                 script {
-                    withDockerRegistry(url: '829007908826.dkr.ecr.ap-south-1.amazonaws.com/decsecops/client') {
+                    docker.withRegistry("https://829007908826.dkr.ecr.ap-south-1.amazonaws.com", "ecr:ap-south-1:ecr-credentials") {
                         dir('client') {
-                            sh 'docker build -t devsecops-client:latest .'
-                            sh 'docker tag devsecops-client:latest 829007908826.dkr.ecr.ap-south-1.amazonaws.com/decsecops/client:v1.0.0'
-                            sh 'docker push 829007908826.dkr.ecr.ap-south-1.amazonaws.com/decsecops/client:v1.0.0'
-                            sh 'trivy image --format table -o client-trivy-image-report.yaml 829007908826.dkr.ecr.ap-south-1.amazonaws.com/decsecops/client:v1.0.0'
+                            docker.build("829007908826.dkr.ecr.ap-south-1.amazonaws.com/devsecops/client:v1.0.0")
+                            docker.image("829007908826.dkr.ecr.ap-south-1.amazonaws.com/devsecops/client:v1.0.0").push()
+                            sh 'trivy image --format table -o client-trivy-image-report.yaml 829007908826.dkr.ecr.ap-south-1.amazonaws.com/devsecops/client:v1.0.0'
                         }
                     }
                 }

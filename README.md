@@ -24,7 +24,7 @@ E2E devsecops pipeline PROD level. This repo integrates app with security checks
 - SonarQube Quality Gate - To create a webhook and wait for QualityGate status
 - Docker Pipeline - To Build and Push image from Jenkins. 
 - Docker Compose Setup (Optional)
-- AWS ECR - 
+- AWS ECR - Plugin to authorize the image push from Jenkins Pipeline
 
 ## ENV/Manual Installation/Credentials
 
@@ -32,6 +32,7 @@ E2E devsecops pipeline PROD level. This repo integrates app with security checks
 - gitLeaks - Manual Installation in Server
 - trivy - Manual Installation in Server
 - Docker - Install Docker
+- AWS ECR IAM Role - Provided Instance Role to EC2 Instance in which Jenkins is running.
 
 ## Difference between plugin and installation:
 
@@ -42,7 +43,6 @@ E2E devsecops pipeline PROD level. This repo integrates app with security checks
 
 1. Advised to create through Github Oauth Client ID and Secret. I did it through Github PAT Token
 1. Store PAT token as username and password in Jenkins Credentials.
-1. 
 
 ## Ref Docs
 
