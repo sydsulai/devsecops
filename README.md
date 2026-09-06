@@ -1,9 +1,37 @@
-# devsecops
+# Devsecops
+
 E2E devsecops pipeline PROD level. This repo integrates app with security checks like SAST, DAST, Code Quality, Image Scanning, Secret Leaks etc.,
 
 ## Shift Left Security
 
+### Steps
+
+1. .gitignore file
+2. pre-commit hook to check for any secret leaks through gitleaks.
+
+    ```sh
+    pre-commit install
+    ```
+
+3. Gitleaks can find all the leaks in all the commits.
+
+    ```sh
+    gitleaks detect
+    ```
+
+4. Enable Branch Protection to disable push to main/release/feature branch.
+Settings -> Branch -> Rulesets
+
+    - Target Branch
+    - Require review bedore merging
+    - Require all the checks to be passed before merging
+
+5. Enabling RBAC
+6. Mandatory Reviews through CODEOWNERS file
+7. Dependabot - Constantly checks all your go.mod, pom.xml against vulnerability database. If there is package that is vulnerable, it can create PR and update the version in your repository.
+
 ## CI/CD Pipeline Steps and Description
+
 1. Git Checkout
 2. Compilation
 3. GitLeaks - For Secrets Exposure Check
@@ -22,7 +50,7 @@ E2E devsecops pipeline PROD level. This repo integrates app with security checks
 - SonarQube Scanner - Plugin is required.
 - Generic Webhook Trigger - Build when PR is submitted to Main from any other branches.
 - SonarQube Quality Gate - To create a webhook and wait for QualityGate status
-- Docker Pipeline - To Build and Push image from Jenkins. 
+- Docker Pipeline - To Build and Push image from Jenkins.
 - Docker Compose Setup (Optional)
 - AWS ECR - Plugin to authorize the image push from Jenkins Pipeline
 
@@ -34,7 +62,7 @@ E2E devsecops pipeline PROD level. This repo integrates app with security checks
 - Docker - Install Docker
 - AWS ECR IAM Role - Provided Instance Role to EC2 Instance in which Jenkins is running.
 
-## Difference between plugin and installation:
+## Difference between plugin and installation
 
 - Plugin is downloaded and managed by Jenkins and is managed through Global Tools management. Environment setup is available throughout the job-execution which is using the plugin. Version Switching is possible through simple one liner in tools section.
 - Global Installation through **apt-get** is managed by the linux-admin team. In case new version is needed it needs to be dowloaded and version switching needs to be done manually in the Jenkins Job.

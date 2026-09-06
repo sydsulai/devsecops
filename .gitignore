@@ -1,58 +1,130 @@
-# Dependencies
-api/node_modules/
-client/node_modules/
-/.pnp
-.pnp.js
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.pyc
+*$py.class
 
-# Testing
-/coverage
-api/coverage
-client/coverage
+# C extensions
+*.so
 
-# Production
-/build
-/dist
-api/build
-api/dist
-client/build
-client/dist
+# Distribution / packaging
+.Python
+build/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
-# Misc
-.DS_Store
-api/.env
-api/.env.local
-api/.env.development.local
-api/.env.test.local
-api/.env.production.local
-client/.env
-client/.env.local
-client/.env.development.local
-client/.env.test.local
-client/.env.production.local
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
 
-# Logs
-lerna-debug.log*
-api/npm-debug.log*
-api/yarn-debug.log*
-api/yarn-error.log*
-client/npm-debug.log*
-client/yarn-debug.log*
-client/yarn-error.log*
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.pytest_cache/
 
-# IDE
-.idea/
+# Type checkers / static analysis
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+.ruff_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# pyenv
+.python-version
+
+# Environments
+.env
+.env.*
+!.env.example
+!.env.sample
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+
+# Dependency / lock files (uncomment based on team policy)
+# Pipenv
+# Pipfile.lock
+# Poetry
+# poetry.lock
+
+# IDEs and editors
 .vscode/
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
 *.swp
 *.swo
-*~
 
-# OS
-Thumbs.db
+# Logs and runtime artifacts
+*.log
+logs/
+*.pid
+*.pid.lock
 
-# React
-.cache/
-client/.cache/
+# Local databases and data dumps
+*.sqlite3
+*.db
+*.dump
 
-# Trivy Files
-api-trivy-report.html
-client-trivy-report.html
+# Runtime uploads / temp
+tmp/
+temp/
+
+# Documentation builds
+docs/_build/
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Celery beat schedule
+celerybeat-schedule
+
+# SageMath parsed files
+*.sage.py
+
+# dotenv variants and secrets
+*.env
+id_rsa
+*.pem
+*.key
+*.crt
+*.p12
+
+# macOS / system files
+.DS_Store
+
+# Optional: local container overrides
+docker-compose.override.yml
+
