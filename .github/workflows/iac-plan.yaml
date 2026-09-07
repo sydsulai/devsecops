@@ -1,5 +1,9 @@
 name: Terraform Deployment
-on: [push]
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
 
 permissions:
   id-token: write
