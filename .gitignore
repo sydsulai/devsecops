@@ -128,3 +128,7 @@ id_rsa
 # Optional: local container overrides
 docker-compose.override.yml
 
+# terraform state
+*.tfstate
+*.tfstate.*
+.terraform/
