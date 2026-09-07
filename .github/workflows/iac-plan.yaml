@@ -29,9 +29,7 @@ jobs:
           url: http://3.109.155.146:8200
           role: gh-actions-role
           method: jwt
-          secrets: |
-            "aws/creds/terraform-role access_key | AWS_ACCESS_KEY_ID"
-            "aws/creds/terraform-role secret_key | AWS_SECRET_ACCESS_KEY"
+          secrets: aws/creds/terraform-role access_key | AWS_ACCESS_KEY_ID
 
       - uses: hashicorp/setup-terraform@v3
       - run: terraform init
