@@ -88,7 +88,7 @@ EOF
 vault write auth/jwt/role/gh-actions-role - <<EOF
 {
     "role_type": "jwt",
-    "bound_audiences": ["https://github.com/"],
+    "bound_audiences": ["https://github.com/sydsulai"],
     "user_claim": "sub",
     "bound_claims_type": "glob",
     "bound_claims": {
