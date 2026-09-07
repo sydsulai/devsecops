@@ -92,7 +92,7 @@ vault write auth/jwt/role/gh-actions-role - <<EOF
     "user_claim": "sub",
     "bound_claims_type": "glob",
     "bound_claims": {
-        "sub": "repo:sydsulai/devsecops"
+        "sub": "repo:sydsulai/devsecops:*"
     },
     "token_policies": ["terraform-policy"],
     "token_ttl": "1h"
