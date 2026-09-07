@@ -4,13 +4,14 @@ E2E devsecops pipeline PROD level. This repo integrates app with security checks
 
 ## Shift Left Security
 
-### Steps
+### Git Security
 
 1. .gitignore file
 2. pre-commit hook to check for any secret leaks through gitleaks.
 
     ```sh
     pre-commit install
+    pre-commit autoupdate # Incase if you have any updates in the .pre-commit-config.yaml
     ```
 
 3. Gitleaks can find all the leaks in all the commits.
@@ -29,6 +30,75 @@ Settings -> Branch -> Rulesets
 5. Enabling RBAC
 6. Mandatory Reviews through CODEOWNERS file
 7. Dependabot - Constantly checks all your go.mod, pom.xml against vulnerability database. If there is package that is vulnerable, it can create PR and update the version in your repository.
+
+### IAC Security
+
+#### Best Practices
+
+- No hardcoding of credentials(.gitignore, gitleaks)
+
+#### Insecure Configuration using Checkov
+
+- Terraform misconfiguration / INsecure Terraform Configuration (What if the S3 bucket is public)
+
+    ```sh
+    checkov -d .
+    ```
+
+#### Hashicorp Vault
+
+- Production deployment of resources happens through CI/CD
+- How do you provide credentials to your CI/CD systems.
+
+  - Create a service account
+  - Create AWS Credentials for that service account and this will access the AWS
+  - Providing secrets in GitHub Actions/GitHub Secrets is generally not considered compliant or secure for production workloads because secrets can be exposed through workflow logs, repository access, pull request exposure, and long-lived storage patterns. Instead, use short-lived credentials via IAM roles, OIDC federation, or a dedicated secret manager such as HashiCorp Vault, AWS Secrets Manager, Azure Key Vault, or GCP Secret Manager.
+
+  - For example, prefer IAM roles with OIDC for GitHub Actions or Jenkins to grant temporary, scoped access rather than storing static long-lived credentials in GitHub Secrets.
+
+- Need a secret management solution(Hashicorp Vault) to create short lived credentials to access AWS and deploy resources.
+
+**Workflows:**
+
+- Github Actions (Uses OIDC and request Vault)
+- VAULT is provided with AWS credentials.
+- VAULT creates an IAM USER with AWS Credentials and Its short lived
+- One time setup of OIDC
+
+```sh
+vault server -dev -dev-root-token-id="root" -dev-listen-address="0.0.0.0:8200"
+export VAULT_ADDR='http://127.0.0.1:8200'
+vault login root
+vault secrets enable aws
+vault write aws/config/root \
+    access_key= \
+    secret_key= \
+    region='ap-south-1'
+vault auth enable jwt
+vault write auth/jwt/config \
+    oidc_discovery_url="https://token.actions.githubusercontent.com" \
+    bound_issuer="https://token.actions.githubusercontent.com"
+
+vault policy write terraform-policy - <<EOF
+path "aws/creds/terraform-role" {
+    capabilities = ["read"]
+}
+EOF
+
+vault write auth/jwt/role/gh-actions-role - <<EOF
+{
+    "role_type": "jwt",
+    "bound_audiences": ["https://github.com/sydsulai"],
+    "user_claim": "sub",
+    "bound_claims_type": "glob",
+    "bound_claims": {
+        "sub": "repo:sydsulai/devsecops:*"
+    },
+    "token_policies": ["terraform-policy"],
+    "token_ttl": "1h"
+}
+EOF
+```
 
 ## CI/CD Pipeline Steps and Description
 
@@ -80,3 +150,11 @@ Settings -> Branch -> Rulesets
 - **Integrating Sonarqube with Jenkins** [Integration](https://medium.com/@lilnya79/integrating-sonarqube-with-jenkins-fe20e454ccf4)
 - **Install Docker** - [Docker Installation](https://docs.docker.com/engine/install/ubuntu/)
 - **Generic WebHook Plugin** - [Generic Webhook](https://github.com/jenkinsci/generic-webhook-trigger-plugin/blob/master/src/test/resources/org/jenkinsci/plugins/gwt/bdd/github/github-pull-request.feature)
+
+## FAQ
+
+1. Is Gitleaks the only secret-scanning utility in the market?
+
+   No. Gitleaks is one of the popular open-source tools for detecting secrets and credentials in code and git history, but it is not the only option. Other commonly used tools include TruffleHog, GitGuardian, AWS Secret Scanner, Spectral, and Detect-Secrets. The choice depends on your environment, integration needs, compliance requirements, and whether you want open-source or managed SaaS capabilities.
+
+2. 
