@@ -67,7 +67,7 @@ Settings -> Branch -> Rulesets
 
 ```sh
 vault server -dev -dev-root-token-id="root" -dev-listen-address="0.0.0.0:8200"
-export VAULT_ADDR='http://127.0.0.0:8200'
+export VAULT_ADDR='http://127.0.0.1:8200'
 vault login root
 vault secrets enable aws
 vault write aws/config/root \
@@ -80,7 +80,7 @@ vault write auth/jwt/config \
     bound_issuer="https://token.actions.githubusercontent.com"
 
 vault policy write terraform-policy - <<EOF
-path "aws/creds/terraform-policy" {
+path "aws/creds/terraform-role" {
     capabilities = ["read"]
 }
 EOF
@@ -88,7 +88,7 @@ EOF
 vault write auth/jwt/role/gh-actions-role - <<EOF
 {
     "role_type": "jwt",
-    "bound_audiences": ["https://github.com/sydsulai"],
+    "bound_audiences": ["https://github.com/"],
     "user_claim": "sub",
     "bound_claims_type": "glob",
     "bound_claims": {
