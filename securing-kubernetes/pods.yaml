@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: frontend
+  namespace: payments-ns-with-rq
+  labels:
+    role: frontend
+spec:
+  containers:
+    - name: frontend
+      image: busybox
+      command: ["sleep", "3600"]
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: attacker
+  namespace: payments-ns-with-rq
+spec:
+  containers:
+    - name: frontend
+      image: busybox
+      command: ["sleep", "3600"]
+
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: backend
+  namespace: payments-ns-with-rq
+  labels:
+    app: my-app
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-svc
+  namespace: payments-ns-with-rq
+spec:
+  selector:
+    app: my-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+

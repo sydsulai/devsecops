@@ -100,6 +100,104 @@ vault write auth/jwt/role/gh-actions-role - <<EOF
 EOF
 ```
 
+### Security Containers
+
+- Running as Non-Root User
+- MultiStage Builds
+- Distroless Images
+- .dockerignore
+- Hardening Docker Image
+
+#### Security Challenges with Root User(Run container as NON_ROOT User)
+
+- Root User(UID: 0)
+  - If its root user, attacker can create multiple volumes within the container and m
+  - They can run multiple process and make it utilize more resources and it will be inaccessible and other neighbor containers cannot access resources.(DDOS Attack)
+  - They can even get access to the host, because docker runtime always runs as root user.
+  (App Container AS Root) => (Can access Docker Daemon which runs as root) => (Can access the host and its network)
+
+#### Large Images
+
+- Build images have more number of packages which are necessary during build time(not necessary during runtime). In some-days, it might have vulnerability.
+- If an actor gets access to the container, can attack the vulnerable package.
+**Multi Stage Builds should contain**
+  - Container Runtime(Eg. Node)
+  - Binary Build
+
+#### Distroless Images
+
+- Reduce the size of the image by reducing the system binaries in the container (like apt, wget etc)
+- You cannot run sh into the app image as it does not contain shell. You can use :debug to sh into the container.
+
+#### Using Docker Run
+
+```sh
+docker run \
+  --read-only \
+  --tmpfs /tmp \
+  --cap-drop ALL \      # Does not give elevated privileges to your hosts
+  --security-opt no-new-privileges \
+  --pids-limit 100 \    # Limit the number of processes(Prevent DDOS attack)
+  --memory 256m \
+  --cpus 0.5 \
+  -p 3000:3000
+  <app-name>
+```
+
+- If the more number of processes, it can impact the other neighboring containers.
+
+### Securing Kubernetes
+
+- Namespaces
+- RBAC Components
+- Network Policy
+- Advanced Policy Enforcement using Kyverno
+- Secrets in kubernetes
+- How to integrate External Secrets Operator (ESO) with Hashicorp 
+
+#### Namespaces
+
+- Kubernetes components to have Logical isolation.
+- Resource Utilization(resourceQuota) of the cluster can be restricted with namespaces.
+
+#### RBAC
+
+If a pod needs to create configmap or others, they should have some permission, we need to provide them access.
+
+- RBAC is applied through 3 resources
+  - Serviceaccount = (If no service account is provided, kubernetes will provide with default service account. Always run pod with designated serviceaccounts.)
+  - Role(Namespace Level), ClusterRole(Cluster Level)
+  - RoleBinding, ClusterRoleBinding
+
+  ```sh
+  kubectl auth can-i list pods --as=system:serviceaccount:payments-ns-with-rq:payments-sa -n payments-ns-with-rq
+  ```
+
+#### Network Policy
+
+- All the pods in the cluster can talk to each other by default because it shares internal cluster network.
+- Admission Control can be done for
+  - Validation - Verifying the resources using validation admission controller
+  - Mutation - Whenever the resources is created, you can add certain labels to the pod or you can annotate it.
+- You can control ingress and egress.
+
+#### Secrets in Kubernetes
+
+- Many types of secrets
+  - password
+  - APIToken
+  - certs
+- Secrets are base64 encoded and its not encrypted.
+
+#### External Secret Operator
+
+- How do you store secrets in GIT for version control?
+
+#### Advanced Policy Enforcement using Kyverno
+
+- Policy enforcement across the kubernetes cluster. This can be implemented using tools like kyverno,Enforce policies using admission control.
+- Eg: No one should use latest tag in their image.
+
 ## CI/CD Pipeline Steps and Description
 
 1. Git Checkout
@@ -156,5 +254,3 @@ EOF
 1. Is Gitleaks the only secret-scanning utility in the market?
 
    No. Gitleaks is one of the popular open-source tools for detecting secrets and credentials in code and git history, but it is not the only option. Other commonly used tools include TruffleHog, GitGuardian, AWS Secret Scanner, Spectral, and Detect-Secrets. The choice depends on your environment, integration needs, compliance requirements, and whether you want open-source or managed SaaS capabilities.
-
-2. 
