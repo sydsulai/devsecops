@@ -1,0 +1,38 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: disallow-latest-tags
+spec:
+  validationFailureAction: enforce
+  rules:
+    - name: disallow-latest-tags
+      match:
+        resources:
+          kinds:
+            - Pod
+      validate:
+        message: "Using the 'latest' tag is not allowed. Please use a specific version"
+        pattern:
+          spec:
+            containers:
+              - image: "!*:latest"
+
+---
+
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: mandatory-namespace
+spec:
+  validationFailureAction: enforce
+  rules:
+    - name: mandatory-namespace
+      match:
+        resources:
+          kinds:
+            - Pod
+      validate:
+        message: "Namespace is mandatory for all pods"
+        pattern:
+          metadata:
+            namespace: "?*"

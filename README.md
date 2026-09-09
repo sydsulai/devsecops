@@ -146,6 +146,58 @@ docker run \
 
 - If the more number of processes, it can impact the other neighboring containers.
 
+### Securing Kubernetes
+
+- Namespaces
+- RBAC Components
+- Network Policy
+- Advanced Policy Enforcement using Kyverno
+- Secrets in kubernetes
+- How to integrate External Secrets Operator (ESO) with Hashicorp 
+
+#### Namespaces
+
+- Kubernetes components to have Logical isolation.
+- Resource Utilization(resourceQuota) of the cluster can be restricted with namespaces.
+
+#### RBAC
+
+If a pod needs to create configmap or others, they should have some permission, we need to provide them access.
+
+- RBAC is applied through 3 resources
+  - Serviceaccount = (If no service account is provided, kubernetes will provide with default service account. Always run pod with designated serviceaccounts.)
+  - Role(Namespace Level), ClusterRole(Cluster Level)
+  - RoleBinding, ClusterRoleBinding
+
+  ```sh
+  kubectl auth can-i list pods --as=system:serviceaccount:payments-ns-with-rq:payments-sa -n payments-ns-with-rq
+  ```
+
+#### Network Policy
+
+- All the pods in the cluster can talk to each other by default because it shares internal cluster network.
+- Admission Control can be done for
+  - Validation - Verifying the resources using validation admission controller
+  - Mutation - Whenever the resources is created, you can add certain labels to the pod or you can annotate it.
+- You can control ingress and egress.
+
+#### Secrets in Kubernetes
+
+- Many types of secrets
+  - password
+  - APIToken
+  - certs
+- Secrets are base64 encoded and its not encrypted.
+
+#### External Secret Operator
+
+- How do you store secrets in GIT for version control?
+
+#### Advanced Policy Enforcement using Kyverno
+
+- Policy enforcement across the kubernetes cluster. This can be implemented using tools like kyverno,Enforce policies using admission control.
+- Eg: No one should use latest tag in their image.
+
 ## CI/CD Pipeline Steps and Description
 
 1. Git Checkout
