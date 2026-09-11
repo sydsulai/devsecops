@@ -153,7 +153,7 @@ docker run \
 - Network Policy
 - Advanced Policy Enforcement using Kyverno
 - Secrets in kubernetes
-- How to integrate External Secrets Operator (ESO) with Hashicorp 
+- How to integrate External Secrets Operator (ESO) with Hashicorp
 
 #### Namespaces
 
@@ -192,11 +192,53 @@ If a pod needs to create configmap or others, they should have some permission, 
 #### External Secret Operator
 
 - How do you store secrets in GIT for version control?
+- Install External Secret Operator in the cluster.
+  - Install Secret Manager providers like Vault.
+  - Add Vault as your Secret Store.
+  - Add a manifest called External Secret which reference to the path in the SecretStore.
 
 #### Advanced Policy Enforcement using Kyverno
 
 - Policy enforcement across the kubernetes cluster. This can be implemented using tools like kyverno,Enforce policies using admission control.
 - Eg: No one should use latest tag in their image.
+
+### Application Security(SAST, DAST, SCA)
+
+- Why APPSec needed?
+  - Insecure SSL or Disable SSL Validation
+  - Hardcoded Secrets
+  - SQL Injection
+  - Insecure Libraries
+  - CORS/CSRF
+
+#### SAST(Static Application Security Testing)
+
+- Sonarqube is the popular tool, which has AI capabilities and matching data patterns.
+- Goes through the source code of the application and looks for common application patterns.
+  - SQL Injection
+  - Insecure SSL
+  - Cryptography
+  - YAML
+  - HardCoded Secrets.
+- [Common Issues in Sonarqube](https://github.com/iam-veeramalla/DevSecOps-Zero-to-Hero/tree/main/06-Application-Security#detailed-information)
+
+#### SCA(Software Composition Analysis)- Dependency Checkers
+
+- Looks at dependencies(direct and indirect) of the application
+- An app contains (1000-2000) max dependencies.
+- Sonarqube can do it, but its better to use SCA tools for SCA specific task.
+
+#### DAST(Dynamic Application Security testing)
+
+- DAST is about Runtime.
+- URL of your application and perform 1000 calls to your application to know whether is there any security issues.
+- This is how the ATTACKERs work as well.
+- OWASP- ZAP are the popular tools.
+
+```sh
+docker run --rm -v "$(pwd):/zap/wrk" -t ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://host.docker.internal:3000 -r zap-report.html
+```
+
 
 ## CI/CD Pipeline Steps and Description
 
