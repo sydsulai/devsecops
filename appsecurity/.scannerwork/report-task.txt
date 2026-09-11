@@ -1,0 +1,6 @@
+projectKey=python-webapp
+serverUrl=http://localhost:9000
+serverVersion=26.9.0.129388
+dashboardUrl=http://localhost:9000/dashboard?id=python-webapp
+ceTaskId=4349939b-23dc-4a17-8921-2a0b2c6cd612
+ceTaskUrl=http://localhost:9000/api/ce/task?id=4349939b-23dc-4a17-8921-2a0b2c6cd612
